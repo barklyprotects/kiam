@@ -62,6 +62,12 @@
   version = "v2.0.0"
 
 [[projects]]
+  name = "github.com/certifi/gocertifi"
+  packages = ["."]
+  revision = "deb3ae2ef2610fde3330947281941c562861188b"
+  version = "2018.01.18"
+
+[[projects]]
   name = "github.com/coreos/go-iptables"
   packages = ["iptables"]
   revision = "b5b1876b170881a8259f036445ee89c8669db386"
@@ -78,6 +84,12 @@
   packages = ["."]
   revision = "a5ef70473c97b71626b9abeda80ee92ba2a7de9e"
   version = "v1.2.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/getsentry/raven-go"
+  packages = ["."]
+  revision = "ed7bcb39ff10f39ab08e317ce16df282845852fa"
 
 [[projects]]
   name = "github.com/ghodss/yaml"
@@ -211,6 +223,12 @@
   packages = ["."]
   revision = "a3647f8e31d79543b2d0f0ae2fe5c379d72cedc0"
   version = "v2.1.0"
+
+[[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
 
 [[projects]]
   name = "github.com/prometheus/client_golang"
@@ -542,6 +560,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3b567d94e9bb44a4123c45af7d814ceac010e318f3b5ddd9d578c0dab5f6a39d"
+  inputs-digest = "be68b61f4c2d5e5785dd1e39979e2cbf053f8bb8ef173c0ecb55138223f46ba8"
   solver-name = "gps-cdcl"
   solver-version = 1

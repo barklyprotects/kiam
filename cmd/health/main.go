@@ -15,11 +15,15 @@ package main
 
 import (
 	"context"
+	"time"
+
 	"github.com/cenkalti/backoff"
+
 	log "github.com/sirupsen/logrus"
 	kiamserver "github.com/uswitch/kiam/pkg/server"
 	"gopkg.in/alecthomas/kingpin.v2"
-	"time"
+
+	"github.com/getsentry/raven-go"
 )
 
 type options struct {
@@ -32,6 +36,10 @@ type options struct {
 	keyPath              string
 	caPath               string
 	timeout              time.Duration
+}
+
+func init() {
+	raven.SetDSN("https://1ce2c4b3e31e46408a6c16092482340c:375ad6821fec4678941ab98c96459d58@exceptions.barkly.com/38")
 }
 
 func main() {
@@ -70,6 +78,7 @@ func main() {
 
 	gateway, err := kiamserver.NewGateway(ctxGateway, opts.serverAddress, opts.serverAddressRefresh, opts.caPath, opts.certificatePath, opts.keyPath)
 	if err != nil {
+		raven.CaptureErrorAndWait(err, nil)
 		log.Fatalf("error creating server gateway: %s", err.Error())
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), opts.timeout)
@@ -78,6 +87,7 @@ func main() {
 	op := func() error {
 		message, err := gateway.Health(ctx)
 		if err != nil {
+			raven.CaptureErrorAndWait(err, nil)
 			log.Warnf("error checking health: %s", err.Error())
 			return err
 		}
@@ -89,6 +99,7 @@ func main() {
 	err = backoff.Retry(op, backoff.WithContext(backoff.NewConstantBackOff(100*time.Millisecond), ctx))
 
 	if err != nil {
+		raven.CaptureErrorAndWait(err, nil)
 		log.Fatalf("error retrieving health: %s", err.Error())
 	}
 }

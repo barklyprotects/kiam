@@ -21,6 +21,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/getsentry/raven-go"
 	"github.com/pubnub/go-metrics-statsd"
 	"github.com/rcrowley/go-metrics"
 	log "github.com/sirupsen/logrus"
@@ -68,6 +69,10 @@ func (o *options) configureLogger() {
 	}
 }
 
+func init() {
+	raven.SetDSN("https://1ce2c4b3e31e46408a6c16092482340c:375ad6821fec4678941ab98c96459d58@exceptions.barkly.com/38")
+}
+
 func main() {
 	opts := &options{}
 
@@ -103,6 +108,7 @@ func main() {
 		rules := newIPTablesRules(opts.hostIP, opts.port, opts.hostInterface)
 		err := rules.Add()
 		if err != nil {
+			raven.CaptureErrorAndWait(err, nil)
 			log.Fatal("error configuring iptables:", err.Error())
 		}
 		defer rules.Remove()
@@ -111,6 +117,7 @@ func main() {
 	if opts.statsD != "" {
 		addr, err := net.ResolveUDPAddr("udp", opts.statsD)
 		if err != nil {
+			raven.CaptureErrorAndWait(err, nil)
 			log.Fatal("error parsing statsd address:", err.Error())
 		}
 		go statsd.StatsD(metrics.DefaultRegistry, opts.statsDInterval, "kiam.agent", addr)
@@ -136,11 +143,13 @@ func main() {
 
 	gateway, err := kiamserver.NewGateway(ctxGateway, opts.serverAddress, opts.serverAddressRefresh, opts.caPath, opts.certificatePath, opts.keyPath)
 	if err != nil {
+		raven.CaptureErrorAndWait(err, nil)
 		log.Fatalf("error creating server gateway: %s", err.Error())
 	}
 
 	server, err := http.NewWebServer(config, gateway, gateway, gateway)
 	if err != nil {
+		raven.CaptureErrorAndWait(err, nil)
 		log.Fatalf("error creating agent http server: %s", err.Error())
 	}
 
