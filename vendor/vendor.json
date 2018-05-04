@@ -177,6 +177,12 @@
 			"revisionTime": "2016-08-04T10:47:26Z"
 		},
 		{
+			"checksumSHA1": "j5lrUUvdX/IICLK/vg9TG9h6Zvs=",
+			"path": "github.com/certifi/gocertifi",
+			"revision": "deb3ae2ef2610fde3330947281941c562861188b",
+			"revisionTime": "2018-01-18T20:34:23Z"
+		},
+		{
 			"checksumSHA1": "RM7wQmNoUSB93ogKxdpA4265++Y=",
 			"path": "github.com/coreos/go-iptables/iptables",
 			"revision": "17b936e6ccb6f6e424f7d89c614164e796df1661",
@@ -213,6 +219,12 @@
 			"path": "github.com/fortytw2/leaktest",
 			"revision": "3b724c3d7b8729a35bf4e577f71653aec6e53513",
 			"revisionTime": "2017-07-15T21:17:39Z"
+		},
+		{
+			"checksumSHA1": "SmEP0JfsilDTRExH6LadhVehPyo=",
+			"path": "github.com/getsentry/raven-go",
+			"revision": "263040ce1a362270b5897a5982572ddc1fe807be",
+			"revisionTime": "2018-04-30T18:20:53Z"
 		},
 		{
 			"checksumSHA1": "17vYJDDMJO63/G/tRFIUuSlMCbE=",
@@ -465,6 +477,12 @@
 			"path": "github.com/peterbourgon/diskv",
 			"revision": "82aa063804cf055e16e8911250f888bc216e8b61",
 			"revisionTime": "2017-09-21T16:56:50Z"
+		},
+		{
+			"checksumSHA1": "ljd3FhYRJ91cLZz3wsH9BQQ2JbA=",
+			"path": "github.com/pkg/errors",
+			"revision": "816c9085562cd7ee03e7f8188a1cfd942858cded",
+			"revisionTime": "2018-03-11T21:45:15Z"
 		},
 		{
 			"checksumSHA1": "WSCsSdD3I7Are0ntaIq6zR9tl0s=",

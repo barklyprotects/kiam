@@ -21,6 +21,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/getsentry/raven-go"
 	"github.com/pubnub/go-metrics-statsd"
 	"github.com/rcrowley/go-metrics"
 	log "github.com/sirupsen/logrus"
@@ -29,6 +30,10 @@ import (
 	serv "github.com/uswitch/kiam/pkg/server"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
+
+func init() {
+	raven.SetDSN("https://1ce2c4b3e31e46408a6c16092482340c:375ad6821fec4678941ab98c96459d58@exceptions.barkly.com/38")
+}
 
 func main() {
 	serverConfig := &serv.Config{TLS: &serv.TLSConfig{}}
@@ -68,6 +73,7 @@ func main() {
 	kingpin.Parse()
 
 	if !serverConfig.AutoDetectBaseARN && serverConfig.RoleBaseARN == "" {
+		raven.CaptureMessageAndWait("role-base-arn not specified and not auto-detected.", nil)
 		log.Fatal("role-base-arn not specified and not auto-detected. please specify or use --role-base-arn-autodetect")
 	}
 
@@ -95,6 +101,7 @@ func main() {
 	if flags.statsd != "" {
 		addr, err := net.ResolveUDPAddr("udp", flags.statsd)
 		if err != nil {
+			raven.CaptureErrorAndWait(err, nil)
 			log.Fatal("error parsing statsd address:", err.Error())
 		}
 		go statsd.StatsD(metrics.DefaultRegistry, flags.statsdInterval, "kiam.server", addr)
@@ -112,6 +119,7 @@ func main() {
 
 	server, err := serv.NewServer(serverConfig)
 	if err != nil {
+		raven.CaptureErrorAndWait(err, nil)
 		log.Fatal("error creating listener: ", err.Error())
 	}
 
